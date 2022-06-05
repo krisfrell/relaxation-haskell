@@ -89,7 +89,6 @@ main = do
     let omega = 1.1
     let eps = 0.000001
 
-    start_time <- getCurrentTime
     a_text <- readFile "A.txt"
     b_text <- readFile "b.txt"
     let b = map(read::String->Double) (words b_text)
@@ -102,6 +101,9 @@ main = do
     let diagonal = toList diag_v --преобразуем главную диагональ в список (Data.Vector -> List)
     let c = zipWith (/) b diagonal --получим начальное приближение b[i]/A[i,i]
     let new_a = toLists matrix
+    start_time <- getCurrentTime
     let c2 = calc2 new_a b c c 0 omega
     let res = relaxation new_a b c2 c n omega eps
     print res
+    end_time <- getCurrentTime
+    print (realToFrac(diffUTCTime end_time start_time) ::Double)
